@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">エントリーの追加</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">エントリーの追加</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="card shadow-lg">
+            <div class="card-header pt-4 pb-3">
+                <h3 class="font-weight-bold mt-2">エントリーの追加({{ entry_option[0] }})</h3>
+            </div>
+            <div class="card-body">
+                <form action="/entrys/add/{{ schedule_id }}/{{ team_id }}" method="POST">
+                    <div class="row">
+                        {% if entry_option[1]|int == 1 %}
+                            {% for i in range(entry_option[2]["RaceNumber"]|int) %}
+                                {% if entry_option[2]["RaceNumber"]|int > 1 %}
+                                        <h5>{{ i + 1 }}レース目</h5>
+                                {% endif %}
+                                <h6>出場メンバー</h6>
+                                <div class="row row-cols-lg-5 w-60">
+                                    {% for AppearanceCount in range(entry_option[2]["AppearanceCount"]|int) %}
+                                        <div class="col">
+                                            <div class="input-group input-group-static mb-4 mx-3">
+                                                <label>{{ AppearanceCount + 1 }}番目</label>
+                                                <select class="form-control selectpicker" data-style="btn btn-link" name="AppearanceCount{{ AppearanceCount + 1 }}-{{ i + 1 }}" required>
+                                                    <option value="None" hidden selected>選択してください</option>
+                                                    {% for data in list_of_name %}
+                                                        <option value="{{ data[0] }}">{{ data[1] }}：{{ data[2] }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            {% if entry_option[2]["ReserveCount"]|int != 0 %}
+                                <h5>補欠メンバー</h5>
+                                <div class="row row-cols-lg-5 w-60">
+                                        {% for ReserveCount in range(entry_option[2]["ReserveCount"]|int) %}
+                                            <div class="col">
+                                                <div class="input-group input-group-static mb-4 mx-3">
+                                                    <label>{{ ReserveCount + 1 }}番目</label>
+                                                    <select class="form-control selectpicker" data-style="btn btn-link" name="ReserveCount{{ ReserveCount + 1 }}" required>
+                                                        <option value="None" hidden selected>選択してください</option>
+                                                        {% for data in list_of_name %}
+                                                            <option value="{{ data[0] }}">{{ data[1] }}：{{ data[2] }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                            {% endif %}
+                        {% elif entry_option[1]|int == 2 %}
+                            {% for i in range(entry_option[2]["RaceNumber"]|int) %}
+                                {% if entry_option[2]["RaceNumber"]|int > 1 %}
+                                    <h5>{{ i + 1 }}レース目</h5>
+                                {% endif %}
+                                <h6>出場メンバー(男子)</h6>
+                                <div class="row row-cols-lg-5 w-60">
+                                    {% for ManAppearanceCount in range(entry_option[2]["Male"]["AppearanceCount"]|int) %}
+                                        <div class="col">
+                                            <div class="input-group input-group-static mb-4 mx-3">
+                                                <label>{{ ManAppearanceCount + 1 }}番目</label>
+                                                <select class="form-control selectpicker" data-style="btn btn-link" name="AppearanceCount{{ ManAppearanceCount + 1 }}-{{ i + 1 }}-Male" required>
+                                                    <option value="None" hidden selected>選択してください</option>
+                                                    {% for data in list_of_name %}
+                                                        {% if data[3] == "男" %}
+                                                            <option value="{{ data[0] }}">{{ data[1] }}：{{ data[2] }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <h6>出場メンバー(女子)</h6>
+                                <div class="row row-cols-lg-5 w-60">
+                                    {% for FemaleAppearanceCount in range(entry_option[2]["Female"]["AppearanceCount"]|int) %}
+                                        <div class="col">
+                                            <div class="input-group input-group-static mb-4 mx-3">
+                                                <label>{{ FemaleAppearanceCount + 1  }}番目</label>
+                                                <select class="form-control selectpicker" data-style="btn btn-link" name="AppearanceCount{{ FemaleAppearanceCount + 1 }}-{{ i + 1 }}-Female" required>
+                                                    <option value="None" hidden selected>選択してください</option>
+                                                    {% for data in list_of_name %}
+                                                        {% if data[3] == "女" %}
+                                                        <option value="{{ data[0] }}">{{ data[1] }}：{{ data[2] }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            {% if entry_option[2]["Male"]["ReserveCount"]|int or entry_option[2]["Female"]["ReserveCount"]|int != 0 %}
+                                <h5>補欠メンバー</h5>
+                            {% endif %}
+                            {% if entry_option[2]["Male"]["ReserveCount"]|int != 0 %}
+                                <h6>男子</h6>
+                                <div class="row row-cols-lg-5 w-60">
+                                    {% for ManReserveCount in range(entry_option[2]["Male"]["ReserveCount"]|int) %}
+                                        <div class="col">
+                                            <div class="input-group input-group-static mb-4 mx-3">
+                                                <label>{{ ManReserveCount + 1 }}番目</label>
+                                                <select class="form-control selectpicker" data-style="btn btn-link" name="ReserveCount{{ ManReserveCount + 1 }}-Male" required>
+                                                    <option value="None" hidden selected>選択してください</option>
+                                                    {% for data in list_of_name %}
+                                                        {% if data[3] == "男" %}
+                                                        <option value="{{ data[0] }}">{{ data[1] }}：{{ data[2] }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if entry_option[2]["Female"]["ReserveCount"]|int != 0 %}
+                                <h6>女子</h6>
+                                <div class="row row-cols-lg-5 w-60">
+                                    {% for FemaleReserveCount in range(entry_option[2]["Female"]["ReserveCount"]|int) %}
+                                        <div class="col">
+                                            <div class="input-group input-group-static mb-4 mx-3">
+                                                <label>{{ FemaleReserveCount + 1 }}番目</label>
+                                                <select class="form-control selectpicker" data-style="btn btn-link" name="ReserveCount{{ FemaleReserveCount + 1 }}-Female" required>
+                                                    <option value="None" hidden selected>選択してください</option>
+                                                    {% for data in list_of_name %}
+                                                        {% if data[3] == "女" %}
+                                                        <option value="{{ data[0] }}">{{ data[1] }}：{{ data[2] }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        <div class="row d-flex justify-content-start">
+                            <div class="col-lg-4">
+                                <button type="button" class="btn btn-outline-secondary btn-lg ms-3" onclick="location.href='/entrys'">キャンセル</button>
+                                <button type="submit" class="btn btn-outline-success btn-lg ms-3">保存する</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

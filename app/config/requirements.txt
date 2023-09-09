@@ -1,0 +1,10 @@
+Flask
+flask-login
+uWSGI
+Flask-HTTPAuth
+Jinja2
+psycopg2
+requests
+oauthlib
+python-dotenv
+Werkzeug==2.3.3

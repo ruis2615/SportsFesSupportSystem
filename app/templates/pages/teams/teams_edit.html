@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">チーム情報・管理</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">チームの編集</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="card shadow-lg">
+            <div class="card-header pt-4 pb-3">
+                <h3 class="font-weight-bold mt-2">チームの編集</h3>
+            </div>
+            <div class="card-body">
+                <form action="/teams/edit/{{ team[0] }}" method="POST">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label>チーム名</label>
+                                <input type="text" class="form-control" name="TeamName" value="{{ team[1] }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label>リーダーの氏名</label>
+                                <input type="text" class="form-control" name="TeamLeader" value="{{ team[2] }}">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 ">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label>副リーダーの氏名</label>
+                                <input type="text" class="form-control" name="TeamSubLeader" value="{{ team[3] }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-lg-4">
+                            <button type="button" class="btn btn-outline-secondary btn-lg ms-3" onclick="location.href='/teams'">キャンセル</button>
+                            <button type="submit" class="btn btn-outline-success btn-lg ms-3">保存する</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

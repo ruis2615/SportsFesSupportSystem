@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  database:
+    container_name: flask_db # 接続名
+    build: ./database
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./database/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD= # postgresユーザーのパスワードを入力
+      - POSTGRES_DB= # 使用したいDB名を指定
+      - DATABASE_HOST=localhost
+      - TZ=Asia/Tokyo
+
+  app:
+    container_name: flask_app
+    build: ./app
+    expose:
+      - "3031"
+    volumes:
+      - ./app:/var/www/app
+    depends_on:
+      - database
+    command: uwsgi --ini /var/www/app/config/uwsgi.ini
+    environment:
+      - TZ=Asia/Tokyo
+
+  nginx:
+    container_name: flask_nginx
+    build: ./nginx
+    restart: always
+    volumes:
+      - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+    ports:
+      - "80:80"

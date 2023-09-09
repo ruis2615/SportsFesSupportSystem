@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">設定</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">設定</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="card shadow-lg">
+            <div class="card-header pt-4 pb-3">
+                <h3 class="font-weight-bold mt-2">設定</h3>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('settings') }}" method="POST">
+                    <div class="row">
+                        <div class="form-check form-switch ps-0 is-filled mx-3">
+                            {% if master_options["dashboard_top_team_data"]|int == 0 %}
+                                <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" name="ScoreOption" checked>
+                            {% elif master_options["dashboard_top_team_data"]|int == 1 %}
+                                <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" name="ScoreOption">
+                            {% endif %}
+                            <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">トップチームの情報をONで表示／OFFで非表示</label>
+                        </div>
+
+                        <div class="form-check form-switch ps-0 is-filled mx-3 mb-5 mt-2">
+                            {% if master_options["entry_status"]|int == 0 %}
+                                <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" name="EntryStatus" checked>
+                            {% elif master_options["entry_status"]|int == 1 %}
+                                <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" name="EntryStatus">
+                            {% endif %}
+                            <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">エントリーの受付状況をONで受付中／OFFで受付停止</label>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-lg-4">
+                            <button type="button" class="btn btn-outline-secondary btn-lg ms-3" onclick="location.href='{{ url_for('index') }}'">ダッシュボードに戻る</button>
+                            <button type="submit" class="btn btn-outline-success btn-lg ms-3">保存する</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

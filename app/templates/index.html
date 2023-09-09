@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         navbar-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">ダッシュボード</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">ダッシュボード</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <!-- トップバー -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="material-icons opacity-10">looks_one</i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">現在のトップ</p>
+                            {% if current_user.is_authenticated %}
+                                {% if current_user.permission == "all_prtmissions" %}
+                                    {% if top_team == None %}
+                                    <h4 class="mb-0">データなし</h4>
+                                    {% else %}
+                                    <h4 class="mb-0">{{ top_team[0] }}</h4>
+                                    {% endif %}
+                                {% else %}
+                                    {% if master_options["dashboard_top_team_data"]|int == 0 %}
+                                        {% if top_team == None %}
+                                        <h4 class="mb-0">データなし</h4>
+                                        {% else %}
+                                        <h4 class="mb-0">{{ top_team[0] }}</h4>
+                                        {% endif %}
+                                    {% elif master_options["dashboard_top_team_data"]|int == 1 %}
+                                        <h4 class="mb-0">非表示</h4>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if master_options["dashboard_top_team_data"]|int == 0 %}
+                                    {% if top_team == None %}
+                                    <h4 class="mb-0">データなし</h4>
+                                    {% else %}
+                                    <h4 class="mb-0">{{ top_team[0] }}</h4>
+                                    {% endif %}
+                                {% elif master_options["dashboard_top_team_data"]|int == 1 %}
+                                    <h4 class="mb-0">非表示</h4>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                    <div class="card-footer p-3">
+                        {% if current_user.is_authenticated %}
+                            {% if current_user.permission == "all_prtmissions" %}
+                                {% if top_team == None %}
+                                    <p class="mb-0">データがありません。</p>
+                                    {% if master_options["dashboard_top_team_data"]|int == 1 %}
+                                        <p class="mb-0">現在、管理者設定で<span class="text-danger text-sm font-weight-bolder">非表示</span>に設定されています。</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p class="mb-0">現在の得点：{{ top_team[1] }}点</p>
+                                    {% if master_options["dashboard_top_team_data"]|int == 1 %}
+                                        <p class="mb-0">現在、管理者設定で<span class="text-danger text-sm font-weight-bolder">非表示</span>に設定されています。</p>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if master_options["dashboard_top_team_data"]|int == 0 %}
+                                    {% if top_team == None %}
+                                        <p class="mb-0">データがありません。</p>
+                                    {% else %}
+                                        <p class="mb-0">現在の得点：{{ top_team[1] }}点</p>
+                                    {% endif %}
+                                {% elif master_options["dashboard_top_team_data"]|int == 1 %}
+                                    <p class="mb-0">管理者が非表示にしています。</p>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            {% if master_options["dashboard_top_team_data"]|int == 0 %}
+                                {% if top_team == None %}
+                                    <p class="mb-0">データがありません。</p>
+                                {% else %}
+                                    <p class="mb-0">現在の得点：{{ top_team[1] }}点</p>
+                                {% endif %}
+                            {% elif master_options["dashboard_top_team_data"]|int == 1 %}
+                                <p class="mb-0">管理者が非表示にしています。</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="material-icons opacity-10">done</i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">現在のプログラム</p>
+                            {% if now_sport == None %}
+                            <h4 class="mb-0">データなし</h4>
+                            {% else %}
+                            <h4 class="mb-0">{{ now_sport[1] }}</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                    <div class="card-footer p-3">
+                        {% if now_sport == None %}
+                        <p class="mb-0">現在、実施しているプログラムはありません。</p>
+                        {% else %}
+                        <p class="mb-0">予定時刻：{{ now_sport[2] }}～{{ now_sport[3] }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="material-icons opacity-10">double_arrow</i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">次のプログラム</p>
+                            {% if next_sports == None %}
+                            <h4 class="mb-0">データなし</h4>
+                            {% else %}
+                            <h4 class="mb-0">{{ next_sports[0][1] }}</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                    <div class="card-footer p-3">
+                        {% if next_sports == None %}
+                        <p class="mb-0">現在、予定しているプログラムはありません。</p>
+                        {% else %}
+                        <p class="mb-0">{{ next_sports[0][2] }}から開始予定</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="icon icon-lg icon-shape bg-gradient-warning shadow-warning text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="material-icons opacity-10">wb_sunny</i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">天気予報</p>
+                            {% if weather_forecast["weathercode"][0] == 0 %}
+                            <h4 class="mb-0">晴れ</h4>
+                            {% elif weather_forecast["weathercode"][0] in [1, 2, 3] %}
+                            <h4 class="mb-0">晴れ／曇り</h4>
+                            {% elif weather_forecast["weathercode"][0] in [51, 53, 55] %}
+                            <h4 class="mb-0">霧雨({{ weather_forecast["precipitation_probability_max"][0] }}%)</h4>
+                            {% elif weather_forecast["weathercode"][0] in [61, 63, 65] %}
+                            <h4 class="mb-0">雨({{ weather_forecast["precipitation_probability_max"][0] }}%)</h4>
+                            {% elif weather_forecast["weathercode"][0] in [80, 81, 82] %}
+                            <h4 class="mb-0">夕立({{ weather_forecast["precipitation_probability_max"][0] }}%)</h4>
+                            {% elif weather_forecast["weathercode"][0] in [71, 73, 75, 77] %}
+                            <h4 class="mb-0">雪</h4>
+                            {% elif weather_forecast["weathercode"][0] in [85, 86] %}
+                            <h4 class="mb-0">雪／曇り</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                    <div class="card-footer p-3">
+                        <p class="mb-0">最高気温：{{ weather_forecast["apparent_temperature_max"][0] }} ℃,　最低気温：{{
+                            weather_forecast["apparent_temperature_min"][0] }} ℃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4 mt-3">
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <div class="card-header pb-0">
+                        <h5>スケジュール</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="timeline timeline-one-side">
+                            {% if now_sport == None and next_sports == None %}
+                            <div class="timeline-block mb-3">
+                                <span class="timeline-step">
+                                    <i class="material-icons text-danger text-gradient">close</i>
+                                </span>
+                                <div class="timeline-content">
+                                    <h6 class="text-dark text-sm font-weight-bold mb-0">現在、表示できるデータがありません。</h6>
+                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                        すべてのプログラムが終了しています。</p>
+                                </div>
+                            </div>
+                            {% elif now_sport != None and next_sports == None %}
+                            <div class="timeline-block mb-3">
+                                <span class="timeline-step">
+                                    <i class="material-icons text-success text-gradient">done</i>
+                                </span>
+                                <div class="timeline-content">
+                                    <h6 class="text-dark text-sm font-weight-bold mb-0">{{ now_sport[0] }}. {{
+                                        now_sport[1] }}</h6>
+                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">予定時刻：{{
+                                        now_sport[2] }}～{{ now_sport[3] }}</p>
+                                </div>
+                            </div>
+                            {% elif now_sport == None and next_sports != None %}
+                            {% for next_sport in next_sports %}
+                            <div class="timeline-block mb-3">
+                                        <span class="timeline-step">
+                                        <i class="material-icons text-info text-gradient">keyboard_double_arrow_down</i>
+                                        </span>
+                                <div class="timeline-content">
+                                    <h6 class="text-dark text-sm font-weight-bold mb-0">{{ next_sport[0] }}. {{
+                                        next_sport[1] }}</h6>
+                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">予定時刻：{{
+                                        next_sport[2] }}～{{ next_sport[3] }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <div class="timeline-block mb-3">
+                                    <span class="timeline-step">
+                                        <i class="material-icons text-success text-gradient">done</i>
+                                    </span>
+                                <div class="timeline-content">
+                                    <h6 class="text-dark text-sm font-weight-bold mb-0">{{ now_sport[0] }}. {{
+                                        now_sport[1] }}</h6>
+                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">予定時刻：{{
+                                        now_sport[2] }}～{{ now_sport[3] }}</p>
+                                </div>
+                            </div>
+                            {% for next_sport in next_sports %}
+                            <div class="timeline-block mb-3">
+                                    <span class="timeline-step">
+                                    <i class="material-icons text-info text-gradient">keyboard_double_arrow_down</i>
+                                    </span>
+                                <div class="timeline-content">
+                                    <h6 class="text-dark text-sm font-weight-bold mb-0">{{ next_sport[0] }}. {{
+                                        next_sport[1] }}</h6>
+                                    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">予定時刻：{{
+                                        next_sport[2] }}～{{ next_sport[3] }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- トップバー終わり -->
+    </div>
+    <footer class="footer pt-5">
+        <div class="container-fluid">
+            <div class="row align-items-center justify-content-lg-between">
+                <div class="col-lg-6 mb-lg-0 mb-4">
+                    <div class="copyright text-center text-sm text-muted text-lg-start">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>
+                        ,
+                        ruis. All Rights Reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+{% endblock %}

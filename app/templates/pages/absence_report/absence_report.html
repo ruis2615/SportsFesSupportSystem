@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">欠席報告</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">欠席報告</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="card w-lg-50 mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">下記の一覧から、競技への出場ができない選手(欠席/諸事情も含む)を報告してください。</h5>
+                        <div class="card-text table-responsive">
+                            <table class="table table-bordered align-items-center">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th style="width: 20%">学年・出席番号</th>
+                                        <th style="width: 60%">氏名</th>
+                                        <th style="width: 20%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in list_of_name %}
+                                        <tr>
+                                        <th class="text-center">{{ data[1] }}</th>
+                                        <th class="text-center">{{ data[2] }}</th>
+                                        <th>
+                                            {% if data[0]|int in absence_report_list %}
+                                                <div class="text-center">
+                                                    <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round m-1"
+                                                        data-bs-toggle="modal" data-bs-target="#DeleteID-{{ data[0] }}">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                                </div>
+
+                                                <div class="modal fade" id="DeleteID-{{ data[0] }}" tabindex="-1"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">確認</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>この操作は、取り消すことができません。<br>本当に削除してもよろしいですか。</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">キャンセル
+                                                                </button>
+                                                                <form action="{{ url_for('absence_report.absence_report') }}/delete/{{ data[0] }}" method="POST"
+                                                                      class="align-middle">
+                                                                    <button type="submit" class="btn btn-danger">削除</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <form action="{{ url_for('absence_report.absence_report') }}/add/{{ data[0] }}" method="POST" class="align-middle text-center">
+                                                    <button type="submit" class="btn btn-success btn-fab btn-fab-mini btn-round m-1">
+                                                        <i class="material-icons">cancel</i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </th>
+                                        </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

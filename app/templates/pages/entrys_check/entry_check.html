@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">エントリーの確認</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">エントリーの確認</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="card shadow-lg">
+            <div class="card-header pt-4 pb-3">
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="location.href='{{ url_for('entrys_check.entrys_check') }}'">戻る</button>
+                <h3 class="font-weight-bold mt-2">{{ entry_data[0] }}</h3>
+            </div>
+            <div class="card-body">
+                {% if entry_data[1]|int == 1 %}
+                    <div class="row">
+                        {% for i in range(entry_data[2]["RaceNumber"]|int) %}
+                            <div class="col-lg-6">
+                                {% if entry_data[2]["RaceNumber"]|int > 1 %}
+                                    <h5>{{ i + 1 }}レース目</h5>
+                                {% else %}
+                                    <h5>出場メンバー</h5>
+                                {% endif %}
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%">No.</th>
+                                            <th style="width: 20%">学年・出席番号</th>
+                                            <th style="width: 50%">氏名</th>
+                                            <th style="width: 10%">出場可能状況</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for AppearanceCount in range(entry_data[2]["AppearanceCount"]|int) %}
+                                            {% if entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string]["number"]|string in absence_report_list %}
+                                                <tr class="table-primary">
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string]["name"] }}</th>
+                                                    <th>不可</th>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string]["name"] }}</th>
+                                                    <th>可</th>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if entry_data[2]["ReserveCount"]|int != 0 %}
+                            <div class="col-lg-6">
+                            <h5>補欠メンバー</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%">No.</th>
+                                            <th style="width: 20%">学年・出席番号</th>
+                                            <th style="width: 50%">氏名</th>
+                                            <th style="width: 10%">出場可能状況</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ReserveCount in range(entry_data[2]["ReserveCount"]|int) %}
+                                            {% if entry_data[3]["ReserveCount" + (loop.index)|string]["number"]|string in absence_report_list %}
+                                                <tr class="table-primary">
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string]["name"] }}</th>
+                                                    <th>不可</th>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string]["name"] }}</th>
+                                                    <th>可</th>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% elif entry_data[1]|int == 2 %}
+                    <div class="row">
+                        {% for i in range(entry_data[2]["RaceNumber"]|int) %}
+                            <h5>{{ i + 1 }}レース目</h5>
+                            <div class="col-lg-6">
+                                {% if entry_data[2]["RaceNumber"]|int > 1 %}
+                                    <h6>男子</h6>
+                                {% else %}
+                                    <h6>男子</h6>
+                                {% endif %}
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%">No.</th>
+                                            <th style="width: 20%">学年・出席番号</th>
+                                            <th style="width: 50%">氏名</th>
+                                            <th style="width: 10%">出場可能状況</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ManAppearanceCount in range(entry_data[2]["Male"]["AppearanceCount"]|int) %}
+                                            {% if entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Male"]["number"]|string in absence_report_list %}
+                                                <tr class="table-primary">
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Male"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Male"]["name"] }}</th>
+                                                    <th>不可</th>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Male"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Male"]["name"] }}</th>
+                                                    <th>可</th>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                {% if entry_data[2]["RaceNumber"]|int > 1 %}
+                                    <h6>女子</h6>
+                                {% else %}
+                                    <h6>女子</h6>
+                                {% endif %}
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%">No.</th>
+                                            <th style="width: 20%">学年・出席番号</th>
+                                            <th style="width: 50%">氏名</th>
+                                            <th style="width: 10%">出場可能状況</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ManAppearanceCount in range(entry_data[2]["Female"]["AppearanceCount"]|int) %}
+                                            {% if entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Female"]["number"] in absence_report_list %}
+                                                <tr class="table-primary">
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Female"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Female"]["name"] }}</th>
+                                                    <th>不可</th>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Female"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["AppearanceCount" + (loop.index)|string + "-" + (i + 1)|string + "-Female"]["name"] }}</th>
+                                                    <th>可</th>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if entry_data[2]["Male"]["ReserveCount"]|int != 0 %}
+                            <div class="col-lg-6">
+                            <h5>補欠メンバー(男子)</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%">No.</th>
+                                            <th style="width: 20%">学年・出席番号</th>
+                                            <th style="width: 50%">氏名</th>
+                                            <th style="width: 10%">出場可能状況</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ReserveCount in range(entry_data[2]["Male"]["ReserveCount"]|int) %}
+                                            {% if entry_data[3]["ReserveCount" + (loop.index)|string+ "-Male"]["number"]|string in absence_report_list %}
+                                                <tr class="table-primary">
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Male"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Male"]["name"] }}</th>
+                                                    <th>不可</th>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Male"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Male"]["name"] }}</th>
+                                                    <th>可</th>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if entry_data[2]["Female"]["ReserveCount"]|int != 0 %}
+                            <div class="col-lg-6">
+                            <h5>補欠メンバー(女子)</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%">No.</th>
+                                            <th style="width: 20%">学年・出席番号</th>
+                                            <th style="width: 50%">氏名</th>
+                                            <th style="width: 10%">出場可能状況</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ReserveCount in range(entry_data[2]["Female"]["ReserveCount"]|int) %}
+                                            {% if entry_data[3]["ReserveCount" + (loop.index)|string+ "-Female"]["number"]|string in absence_report_list %}
+                                                <tr class="table-primary">
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Female"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Female"]["name"] }}</th>
+                                                    <th>不可</th>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <th>{{ loop.index }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Female"]["number"] }}</th>
+                                                    <th>{{ entry_data[3]["ReserveCount" + (loop.index)|string+ "-Female"]["name"] }}</th>
+                                                    <th>可</th>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

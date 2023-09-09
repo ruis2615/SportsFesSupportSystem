@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">ログイン(管理用)</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">ログイン(管理用)</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-lg-4 col-md-8 col-12 mx-auto">
+                <div class="card z-index-0 fadeIn3 fadeInBottom">
+                    <div class="card-header p-0 position-relative mt-n4 mx-auto mx-lg-7 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg py-2 pe-1">
+                            <h4 class="text-white font-weight-bolder text-center mb-0">ログイン</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url_for('login') }}" method="POST" class="text-start">
+                            {% if error != None %}
+                                <p class="text-danger text-center">{{ error }}</p>
+                            {% endif %}
+                            <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="UserName">ユーザー名</label>
+                                    <input type="text" class="form-control is-valid" id="UserName" name="UserName">
+                                </div>
+                            <div class="input-group input-group-outline mb-3">
+                                    <label class="form-label" for="UserPassword">パスワード</label>
+                                    <input type="password" class="form-control is-valid" id="UserPassword" name="UserPassword">
+                            </div>
+                            <div class="form-check form-switch d-flex align-items-center mb-3">
+                                <input class="form-check-input" type="checkbox" id="rememberMe" name="RememberMe">
+                                <label class="form-check-label mb-0 ms-3" for="rememberMe">ログインしたままにする</label>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ログイン</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

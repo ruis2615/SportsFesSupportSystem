@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">スケジュール管理</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">スケジュールの編集</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="card shadow-lg">
+            <div class="card-header pt-4 pb-3">
+                <h3 class="font-weight-bold mt-2">スケジュールの編集</h3>
+            </div>
+            <div class="card-body">
+                <form action="/schedules/edit/{{ schedule[0] }}" method="POST">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label>スケジュール名</label>
+                                <input type="text" class="form-control" name="ScheduleName" value="{{ schedule[1] }}" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label>プログラムの順番</label>
+                                <input type="number" class="form-control" name="ScheduleNumber" value="{{ schedule[2] }}" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label for="category">区分</label>
+                                <select class="form-control selectpicker" data-style="btn btn-link" name="ScheduleType" id="category" required>
+                                    {% if schedule[3] == 1 %}
+                                    <option value="1" selected>競技(男女)</option>
+                                    <option value="2">競技(男女別)</option>
+                                    <option value="0">その他</option>
+                                    {% elif schedule[3] == 2 %}
+                                    <option value="1">競技(男女)</option>
+                                    <option value="2" selected>競技(男女別)</option>
+                                    <option value="0">その他</option>
+                                    {% elif schedule[3] == 0 %}
+                                    <option value="1">競技</option>
+                                    <option value="2">競技(男女別)</option>
+                                    <option value="0" selected>その他</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="SportDetails">
+                        {% if schedule[3] == 1 %}
+                            <p class="text-danger mx-3">※1レースで必要な人数を入力してください。</p>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>出場人数</label>
+                                    <input type="number" class="form-control" name="AppearanceCount" value="{{ schedule[4]['AppearanceCount'] }}" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>補欠人数</label>
+                                    <input type="number" class="form-control" name="ReserveCount" value="{{ schedule[4]['ReserveCount'] }}" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>レース数</label>
+                                    <input type="number" class="form-control" name="RaceNumber" value="{{ schedule[4]['RaceNumber'] }}" required>
+                                </div>
+                            </div>
+                        {% elif schedule[3] == 2 %}
+                            <p class="text-danger mx-3">※1レースで必要な人数を入力してください。</p>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>出場人数(男子)</label>
+                                    <input type="number" class="form-control" name="AppearanceCountMale" value="{{ schedule[4]['Male']['AppearanceCount'] }}" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>補欠人数(男子)</label>
+                                    <input type="number" class="form-control" name="ReserveCountMale" value="{{ schedule[4]['Male']['ReserveCount'] }}" required="">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>出場人数(女子)</label>
+                                    <input type="number" class="form-control" name="AppearanceCountFemale"  value="{{ schedule[4]['Female']['AppearanceCount'] }}"  required>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>補欠人数(女子)</label>
+                                    <input type="number" class="form-control" name="ReserveCountFemale" value="{{ schedule[4]['Female']['ReserveCount'] }}" required="">
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="input-group input-group-static mb-4 mx-3">
+                                    <label>レース数</label>
+                                    <input type="number" class="form-control" name="RaceNumber" value="{{ schedule[4]['RaceNumber'] }}" required="">
+                                </div>
+                            </div>
+                        {% elif schedule[3] == 0 %}
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label>開始時刻</label>
+                                <input type="time" class="form-control" name="ScheduleStartedAt" value="{{ schedule[5] }}" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 ">
+                            <div class="input-group input-group-static mb-4 mx-3">
+                                <label>終了時刻</label>
+                                <input type="time" class="form-control" name="ScheduleEndedAt" value="{{ schedule[6] }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-lg-4">
+                            <button type="button" class="btn btn-outline-secondary btn-lg ms-3" onclick="location.href='/schedules'">キャンセル</button>
+                            <button type="submit" class="btn btn-outline-success btn-lg ms-3">保存する</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

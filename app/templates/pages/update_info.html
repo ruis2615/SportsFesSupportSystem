@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">アップデート情報</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">アップデート情報</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="card w-xl-60 w-lg-auto mb-3">
+            <div class="card-body">
+                <h5 class="card-title">2023/06/07 リリース(v1.2.1)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">更新内容</h6>
+                <p class="card-text">
+                    ・エントリーの確認画面において、欠席していたり、何らかの事情により、出場できない選手を赤くハイライトするようになりました。
+                </p>
+            </div>
+        </div>
+        <div class="card w-xl-60 w-lg-auto mb-3">
+            <div class="card-body">
+                <h5 class="card-title">2023/06/07 リリース(v1.2.0)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">更新内容</h6>
+                <p class="card-text">
+                    ・管理者権限を持つユーザーが、欠席報告をできる機能を追加しました。
+                    <br>
+                    ・その他、軽微な不具合を修正
+                </p>
+            </div>
+        </div>
+        <div class="card w-xl-60 w-lg-auto mb-3">
+            <div class="card-body">
+                <h5 class="card-title">2023/06/04 リリース(v1.1.0)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">更新内容</h6>
+                <p class="card-text">
+                    ・管理者及び各チームに発行されたアカウントで、エントリーの確認ができるようになりました。
+                    <br>
+                    ・その他、軽微な不具合を修正
+                </p>
+            </div>
+        </div>
+        <div class="card w-xl-60 w-lg-auto mb-3">
+            <div class="card-body">
+                <h5 class="card-title">2023/05/25 リリース(v1.0.1)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">更新内容</h6>
+                <p class="card-text">
+                    ・エントリーの締切機能を管理者向けに追加
+                    <br>
+                    ・エントリー画面で、何も選択せずに保存してから、再度編集すると、データの表示がおかしくなる不具合を修正
+                    <br>
+                    ・その他、軽微な不具合を修正
+                </p>
+            </div>
+        </div>
+        <div class="card w-xl-60 w-lg-auto">
+            <div class="card-body">
+                <h5 class="card-title">2023/05/24 リリース(v1.0.0)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">更新内容</h6>
+                <p class="card-text">
+                    ・エントリー画面において、「初回エントリー日時」及び「更新日時」の時刻がずれてしまう不具合を修正
+                    <br>
+                    ・時刻の表記を「秒」まで表示していた仕様を「分」まで表示する仕様に変更
+                    <br>
+                    ・本システムのアップデート(更新)情報を見ることができるページを用意
+                    <br>
+                    ・その他、軽微な不具合を修正
+                </p>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

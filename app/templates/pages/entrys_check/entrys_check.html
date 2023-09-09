@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">エントリーの確認</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">エントリーの確認</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">エントリーの確認</h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7">プログラム名</th>
+                                    {% if current_user.permission == "all_prtmissions" %}
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">チーム名</th>
+                                    {% endif %}
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">エントリー状況</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">初回エントリー日時</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">更新日時</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for row in entrys %}
+                                <tr>
+                                    {% if current_user.permission == "all_prtmissions" %}
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <a class="mb-0 fs-4 fw-bold" href="{{ url_for('entrys_check.entrys_check') }}/preview/{{ row[1] }}/{{ row[3] }}">{{ row[2] }}</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="fs-5 font-weight-bold mb-0">{{ row[4] }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="fs-5 font-weight-bold mb-0">{{ row[5] }}</p>
+                                        </td>
+                                        <td>
+                                            {% if row[6] == None %}
+                                                <p class="fs-5 font-weight-bold mb-0">未エントリー</p>
+                                            {% else %}
+                                                <p class="fs-5 font-weight-bold mb-0">{{ row[6] }}</p>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if row[7] == None %}
+                                                <p class="fs-5 font-weight-bold mb-0">更新履歴なし</p>
+                                            {% else %}
+                                                <p class="fs-5 font-weight-bold mb-0">{{ row[7] }}</p>
+                                            {% endif %}
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <a class="mb-0 fs-4 fw-bold" href="{{ url_for('entrys_check.entrys_check') }}/preview/{{ row[1] }}/{{ row[4] }}">{{ row[3] }}</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="fs-5 font-weight-bold mb-0">{{ row[5] }}</p>
+                                        </td>
+                                        <td>
+                                            {% if row[6] == None %}
+                                                <p class="fs-5 font-weight-bold mb-0">未エントリー</p>
+                                            {% else %}
+                                                <p class="fs-5 font-weight-bold mb-0">{{ row[6] }}</p>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if row[7] == None %}
+                                                <p class="fs-5 font-weight-bold mb-0">更新履歴なし</p>
+                                            {% else %}
+                                                <p class="fs-5 font-weight-bold mb-0">{{ row[7] }}</p>
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}

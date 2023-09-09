@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-2 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <ul class="navbar-nav me-3">
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" style="">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">ページ</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">チーム情報・管理</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">チーム情報・管理</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h6 class="text-white text-capitalize ps-3">チーム一覧</h6>
+
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 mx-3">
+                        <form action="/teams/add" method="GET">
+                            <button type="submit" class="btn btn-success btn-fab btn-fab-mini btn-round">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </form>
+
+                    </div>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7">チーム名</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">現在の得点</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">現在の順位</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">リーダーの氏名</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">副リーダーの氏名</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">ログインID</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-2">ログインパスワード</th>
+                                    <th class="text-secondary text-xs font-weight-bolder opacity-7 ps-0"
+                                        style="width: 10px"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for row in teams %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 fs-4 ">{{ row[1] }}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="fs-5 font-weight-bold mb-0">{{ row[2] }}点</p>
+                                    </td>
+                                    <td>
+                                        <p class="fs-5 font-weight-bold mb-0">{{ row[3] }}位</p>
+                                    </td>
+                                    <td>
+                                        {% if row[4] == "" %}
+                                        <p class="fs-5 font-weight-bold mb-0">なし</p>
+                                        {% else %}
+                                        <p class="fs-5 font-weight-bold mb-0">{{ row[4] }}</p>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if row[5] == "" %}
+                                        <p class="fs-5 font-weight-bold mb-0">なし</p>
+                                        {% else %}
+                                        <p class="fs-5 font-weight-bold mb-0">{{ row[5] }}</p>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <p class="fs-5 font-weight-bold mb-0">{{ row[6] }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="fs-5 font-weight-bold mb-0">{{ row[7] }}</p>
+                                    </td>
+                                    <td>
+                                        <form action="/teams/edit/{{ row[0] }}" method="GET" class="align-middle">
+                                            <button type="submit"
+                                                    class="btn btn-success btn-fab btn-fab-mini btn-round m-1">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-danger btn-fab btn-fab-mini btn-round m-1"
+                                                data-bs-toggle="modal" data-bs-target="#TeamRemove{{ row[0] }}">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                        <div class="modal fade" id="TeamRemove{{ row[0] }}" tabindex="-1"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">確認</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>この操作は、取り消すことができません。<br>本当に削除してもよろしいですか。</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">キャンセル
+                                                        </button>
+                                                        <form action="/teams/remove/{{ row[0] }}" method="GET"
+                                                              class="align-middle">
+                                                            <button type="submit" class="btn btn-danger">削除</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer pt-5">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <div class="copyright text-center text-sm text-muted text-lg-start">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            ,
+                            ruis. All Rights Reserved.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</main>
+{% endblock %}
